@@ -12,7 +12,13 @@ export default function Home() {
     return r.json();
   }
 
-  const [tasks, setTasks] = useState([]);
+  interface Task {
+    id: number;
+    completed: boolean;
+    // Add other properties of a task as needed
+  }
+
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -25,6 +31,10 @@ export default function Home() {
     }
     fetchTasks();
   }, []);
+
+  const handleTaskDelete = (id: number) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  };
 
   return (
     <>
@@ -90,7 +100,7 @@ export default function Home() {
           {tasks.length > 0 ? (
             <div className="flex flex-col gap-[16px]">
               {tasks.map((task: any) => (
-                <TaskCard key={task.id} task={task} />
+                <TaskCard key={task.id} task={task} onDelete={handleTaskDelete} />
               ))}
             </div>
           ) : (

@@ -1,23 +1,38 @@
 "use client";
-import { Task } from "@/lib/api";
+import { Task, deleteTask } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function TaskCard({ task }: { task: Task }) {
+export default function TaskCard({
+    task,
+    onDelete,
+  }: {
+    task: Task;
+    onDelete: (id: number) => void;
+  }) {
   const router = useRouter();
 //   const toggle = async () => { await updateTask(task.id, { completed: !task.completed }); router.refresh(); };
-//   const remove = async () => { if (confirm("Delete this task?")) { await deleteTask(task.id); router.refresh(); } };
-
-if (!task) {
-    return null; // Return nothing if task is undefined
-  }
-
-  const toggleTaskCompletion = async (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    console.log(`Task ${task.id} toggled`);
+const remove = async () => {
+    if (confirm("Delete this task?")) {
+      try {
+        await deleteTask(task.id);
+        onDelete(task.id); // Notify parent to update the task list
+      } catch (error) {
+        console.error("Failed to delete task:", error);
+      }
+    }
   };
 
-  return (
+if (!task) {
+    return null;
+}
+
+const toggleTaskCompletion = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    console.log(`Task ${task.id} toggled`);
+};
+
+return (
     <div
       className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg border p-4 bg-[#262626] hover:shadow-md border-[#333333] w-[736px] h-[72px] opacity-100"
     >
@@ -55,6 +70,7 @@ if (!task) {
       <button
         onClick={(e) => {
           e.stopPropagation();
+          remove();
         }}
       >
         <Image
