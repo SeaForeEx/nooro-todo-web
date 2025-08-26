@@ -14,10 +14,12 @@ export default function Home() {
     return r.json();
   }
 
-  interface Task {
+  type Task = {
     id: number;
+    title: string;
+    description?: string;
     completed: boolean;
-  }
+  };
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -36,6 +38,27 @@ export default function Home() {
   const handleTaskDelete = (id: number) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
+
+  const handleToggleCompletion = (id: number) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
+  const handleTaskUpdate = (updatedTask: Task) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+      )
+    );
+  };
+
+  const sortedTasks = [...tasks].sort((a, b) => {
+    if (a.completed === b.completed) return 0;
+      return a.completed ? 1 : -1;
+  });
 
   return (
     <>
@@ -99,8 +122,13 @@ export default function Home() {
 
           {tasks.length > 0 ? (
             <div className="flex flex-col gap-[16px]">
-              {tasks.map((task: any) => (
-                <TaskCard key={task.id} task={task} onDelete={handleTaskDelete} />
+              {sortedTasks.map((task: any) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onDelete={handleTaskDelete}
+                  onUpdate={handleTaskUpdate}
+                />
               ))}
             </div>
           ) : (

@@ -1,22 +1,23 @@
-"use client";
-import { Task, deleteTask } from "@/lib/api";
+"use client"
+import { Task, deleteTask, updateTask } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function TaskCard({
     task,
     onDelete,
+    onUpdate,
   }: {
     task: Task;
     onDelete: (id: number) => void;
+    onUpdate: (updatedTask: Task) => void;
   }) {
   const router = useRouter();
-//   const toggle = async () => { await updateTask(task.id, { completed: !task.completed }); router.refresh(); };
-const remove = async () => {
+  const remove = async () => {
     if (confirm("Delete this task?")) {
       try {
         await deleteTask(task.id);
-        onDelete(task.id); // Notify parent to update the task list
+        onDelete(task.id); 
       } catch (error) {
         console.error("Failed to delete task:", error);
       }
@@ -29,7 +30,17 @@ if (!task) {
 
 const toggleTaskCompletion = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    console.log(`Task ${task.id} toggled`);
+    try {
+        const updatedTask = { ...task, completed: !task.completed };
+        await updateTask(task.id, { completed: updatedTask.completed });
+        onUpdate(updatedTask);
+      } catch (error) {
+        console.error("Failed to toggle task completion:", error);
+    }
+};
+
+const navigateToEdit = () => {
+  router.push(`/tasks/${task.id}`);
 };
 
 return (
@@ -60,12 +71,13 @@ return (
           )}
         </div>
         <span
-            className={`font-inter font-normal text-[14px] leading-[140%] tracking-[0%] ${
+            onClick={navigateToEdit}
+            className={`cursor-pointer font-normal text-[14px] leading-[140%] tracking-[0%] ${
                 task.completed ? "line-through text-gray-400" : ""
             }`}
         >
-  {task.title}
-</span>
+          {task.title}
+        </span>
       </div>
       <button
         onClick={(e) => {
