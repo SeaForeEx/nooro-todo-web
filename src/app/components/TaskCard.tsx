@@ -45,7 +45,8 @@ const navigateToEdit = () => {
 
 return (
     <div
-      className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg border p-4 bg-[#262626] hover:shadow-md border-[#333333] w-[736px] h-[72px] opacity-100"
+      className={`grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg border p-4 bg-[#262626] hover:shadow-md w-[736px] h-[72px] opacity-100`}
+      style={{ borderColor: task.color || "#333333" }}
     >
       <div className="flex items-center gap-3">
         <div
@@ -71,10 +72,12 @@ return (
           )}
         </div>
         <span
-            onClick={navigateToEdit}
-            className={`cursor-pointer font-normal text-[14px] leading-[140%] tracking-[0%] ${
-                task.completed ? "line-through text-gray-400" : ""
-            }`}
+          onClick={navigateToEdit}
+          className={`cursor-pointer font-normal text-[14px] leading-[140%] tracking-[0%] ${
+            task.completed
+              ? "line-through text-gray-400 pointer-events-none"
+              : "text-white"
+          }`}
         >
           {task.title}
         </span>
