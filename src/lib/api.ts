@@ -11,6 +11,15 @@ export const listTasks = async (): Promise<Task[]> => {
     return r.json();
 };
 
+export const getSingleTask = async (id: number): Promise<Task> => {
+  const r = await fetch(`${BASE}/tasks/${id}`, { cache: "no-store" });
+  if (!r.ok) {
+      if (r.status === 404) throw new Error("Task not found");
+      throw new Error("Failed to fetch task");
+  }
+  return r.json();
+};
+
 export const createTask = async (data: Pick<Task, "title" | "color">) => {
     const r = await fetch(`${BASE}/tasks`, {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -20,17 +29,18 @@ export const createTask = async (data: Pick<Task, "title" | "color">) => {
     return r.json();
 };
 
-export const updateTask = async (
-    id: number,
-    data: Partial<Pick<Task, "title" | "color" | "completed">>
-  ) => {
-    const r = await fetch(`${BASE}/tasks/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (!r.ok) throw new Error("Failed to update task");
-    return r.json();
+export const updateTask = async (id: number, data: Partial<Task>) => {
+  console.log("Updating task:", id, data);
+  const r = await fetch(`${BASE}/tasks/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!r.ok) {
+    console.error("Failed to update task:", await r.text());
+    throw new Error("Failed to update task");
+  }
+  return r.json();
 };
 
 export const deleteTask = async (id: number) => {
