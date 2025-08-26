@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📘 Nooro Todo WEB
 
-## Getting Started
+Frontend for the **Todo List App** built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS**.
 
-First, run the development server:
+---
 
+## 🚀 Features
+- View all tasks
+- Create new tasks
+- Edit task title & color
+- Toggle completion status
+- Delete tasks with confirmation
+- Responsive design (based on provided Figma)
+
+---
+
+## 🛠 Tech Stack
+- Next.js 14 (App Router)
+- React + TypeScript
+- Tailwind CSS
+- Fetch API for backend calls
+
+---
+
+## 🔑 Prerequisites
+- [Node.js](https://nodejs.org/) v18+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (to run MySQL in a container)
+
+---
+
+## 📦 Setup
+
+### 1. Clone the Repository & Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/SeaForeEx/nooro-todo-web.git
+cd nooro-todo-web
+npm install && npm install typescript tailwindcss postcss autoprefixer
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Create your environment file
+Add a ```.env.local``` file with:
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:4000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Make sure the Back End is running
+Follow the [nooro-todo-api setup instructions](https://github.com/SeaForeEx/nooro-todo-api/edit/main/README.md) and start it on port 4000.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run the Front End in development mode
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Open the app in your browser
+It will be available at:
+```bash
+http://localhost:3000
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
