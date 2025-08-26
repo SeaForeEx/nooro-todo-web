@@ -1,10 +1,12 @@
 "use client";
-import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import TaskCard from "./components/TaskCard";
 
 export default function Home() {
+  const router = useRouter();
+
   async function getTasks() {
     const base = process.env.NEXT_PUBLIC_API_URL!;
     const r = await fetch(`${base}/tasks`, { cache: "no-store" });
@@ -15,7 +17,6 @@ export default function Home() {
   interface Task {
     id: number;
     completed: boolean;
-    // Add other properties of a task as needed
   }
 
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -38,9 +39,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>ToDo App</title>
-      </Head>
       <main className="bg-[#1A1A1A] min-h-screen text-white">
         <div className="bg-[#0D0D0D] flex items-center justify-center gap-4 p-4 h-[200px] relative">
           <Image
@@ -57,7 +55,9 @@ export default function Home() {
         </div>
 
         <div className="relative">
-          <button className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[736px] h-[52px] bg-[#1E6F9F] text-[#F2F2F2] font-bold rounded-lg border-none flex items-center justify-center gap-[8px] p-[16px] text-[14px] leading-[140%] tracking-[0%] cursor-pointer">
+          <button 
+            onClick={() => router.push("/tasks/new")} 
+            className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[736px] h-[52px] bg-[#1E6F9F] text-[#F2F2F2] font-bold rounded-lg border-none flex items-center justify-center gap-[8px] p-[16px] text-[14px] leading-[140%] tracking-[0%] cursor-pointer">
             <span>Create Task</span>
             <Image
               src="/plus.svg"
